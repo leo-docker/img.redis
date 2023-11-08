@@ -1,0 +1,26 @@
+FROM ubuntu:20.04
+
+# 預安裝
+RUN apt update
+RUN apt-get install -y --no-install-recommends vim git zsh wget net-tools openssh-server
+# 配置 zsh
+ADD zshrc /root/.zshrc
+ADD omz.tar /root/
+# 配置SSH Service
+ADD sshd_config /etc/ssh/
+# ---
+
+# 針對性預安裝
+RUN apt-get install -y make gcc
+# 配置 Redis
+WORKDIR /opt
+ADD redis-6.0.10.tar.gz /opt/
+RUN mv redis-6.0.10 redis-src
+RUN mkdir redis
+WORKDIR /opt/redis-src
+RUN make && make install PREFIX=/opt/redis
+
+# ---
+WORKDIR /opt
+# 啟動指令
+CMD ["/bin/zsh"]
