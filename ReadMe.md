@@ -3,7 +3,7 @@
 
 #### 启动指令
 ```shell
-docker run -it --rm \
+docker run -d \
   --name redis \
   -p 6379:6379 \
   maleo/redis:6.0.10
